@@ -54,10 +54,6 @@ public class Data {
     }
 
     private String removeBOM(String s) {
-        String UTF8_BOM = "\uFEFF";
-        if (s.startsWith(UTF8_BOM)) {
-            s = s.substring(1);
-        }
-        return s;
+        return s.startsWith("\uFEFF") ? s.substring(1) : s;
     }
 }
