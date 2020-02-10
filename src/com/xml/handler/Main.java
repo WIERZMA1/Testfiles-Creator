@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -26,6 +28,7 @@ import java.util.Optional;
 import java.util.prefs.Preferences;
 
 import static javafx.scene.layout.GridPane.setHalignment;
+import static javafx.scene.layout.GridPane.setValignment;
 
 public class Main extends Application {
 
@@ -35,6 +38,7 @@ public class Main extends Application {
     private String exceptionMessage = change.getException();
     private Preferences pref = Preferences.userNodeForPackage(getClass());
     private DirectoryChooser dc = new DirectoryChooser();
+    private FileChooser fc = new FileChooser();
     private File dir = new File(pref.get(USER_DIR, System.getProperty("user.dir")));
 
     private Button startBtn = new Button("Run");
@@ -42,6 +46,7 @@ public class Main extends Application {
     private Button exitBtn = new Button("Exit");
     private Button dirBtn = new Button("Dir:");
     private Button openDir = new Button("Open");
+    private Button uploadTest = new Button("Upload");
     private HBox buttons = new HBox(startBtn, clearBtn, exitBtn);
     private Button both = new Button("FS&TS");
     private CheckBox fs = new CheckBox("FS");
@@ -253,6 +258,8 @@ public class Main extends Application {
 
         gridPane.add(onTop, 3, 0);
         gridPane.add(glnInputNumbers, 3, 1);
+        gridPane.add(uploadTest, 3,2);
+        setValignment(uploadTest, VPos.BOTTOM);
         gridPane.add(signLabel, 3, 3);
         setHalignment(signLabel, HPos.RIGHT);
 
@@ -279,6 +286,18 @@ public class Main extends Application {
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Folder doesn't exist", ButtonType.OK);
                 alert.show();
+            }
+        });
+        uploadTest.setOnAction(e -> {
+            fc.setInitialDirectory(dir);
+            File testFile = fc.showOpenDialog(primaryStage);
+            if (testFile != null && testFile.length() != 0) {
+                methods.replaceResource(testFile);
+            } else {
+                Alert error = new Alert(Alert.AlertType.ERROR,
+                        "Open new test file");
+                error.setTitle("Test file is empty");
+                error.showAndWait();
             }
         });
         onTop.setOnAction(e -> {

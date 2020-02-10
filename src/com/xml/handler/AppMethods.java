@@ -6,7 +6,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 public class AppMethods {
 
@@ -74,6 +82,18 @@ public class AppMethods {
             return new Data(sender, gln, orgNr, recName, street, zip, city);
         } else {
             return null;
+        }
+    }
+
+    public void replaceResource(File file) {
+        try {
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            Path newFile = file.toPath();
+            String oldFile = Paths.get(classloader.getResource(newFile.getFileName().toString()).toURI()).toString();
+            Path path = Paths.get(oldFile);
+            Files.copy(newFile, path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
         }
     }
 }

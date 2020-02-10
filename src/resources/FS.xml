@@ -112,7 +112,7 @@
             <cac:ID>BGABSESS</cac:ID>
           </cac:FinancialInstitution>
         </cac:FinancialInstitutionBranch>
-        <cac:PaymentInstructionID>1806012345678912345</cac:PaymentInstructionID>
+        <cac:PaymentInstructionID>101001</cac:PaymentInstructionID>
       </cac:PayeeFinancialAccount>
     </cac:PaymentMeans>
     <cac:PaymentTerms>
